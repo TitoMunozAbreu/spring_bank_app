@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      data-bs-theme="dark">
+<head th:replace="~{fragments::head}"/>
+<body>
+  <!--NavBar-->
+  <section th:replace="~{fragments::header}"/>
+  <!--Alert msg-->
+  <section th:replace="~{fragments::alerts-msg}"/>
+  <!--Customer-->
+  <section>
+    <div class="container my-4">
+      <div class="">
+        <div class="row ">
+          <!--customer detail info-->
+          <div class="col col-lg-4 my-4">
+            <div class="card">
+              <div class="card-header">
+                <h3 th:text="${customer.name() + ' ' + customer.lastName() }"></h3>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Customer personal detail</h5>
+                <p class="card-text">
+
+                <span th:text="'Date of Birth: ' + ${customer.dob()}"/> <br>
+                <span th:text="'Email: ' + ${customer.email()}"/> <br>
+                <span th:text="'Mobile: ' + ${customer.mobile()}"/> <br>
+                <span th:text="'Role: ' + ${customer.role()}"/>
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Accounts-->
+        <div class="row">
+          <div class="col col-lg-8">
+            <div class="accordion" id="accordionAccount">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button"
+                          data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                          aria-expanded="true" aria-controls="collapseOne">
+                    Accounts
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionAccount">
+                  <div class="accordion-body">
+                    <table class="table table-striped table-responsive">
+                      <thead>
+                      <tr>
+                        <th scope="col">Iban</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Balance</th>
+                        <th scope="col">Operations</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                      <!--Customer data-->
+                      <tr th:each="account, status : ${customer.accounts()}">
+                        <td scope="row" th:text="${account.iban()}"></td>
+                        <td th:text="${account.name()}"></td>
+                        <td th:text="'€ ' + ${account.balance()}"></td>
+                        <td>
+                          <!--Btn edit customer-->
+                          <button
+                            type="button" class="btn btn-outline-primary"><i class="bi bi-pencil-fill"></i>
+                          </button>
+                          <!--Btn Delete customer-->
+                          <button
+                            type="button" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--Bootstrap JS-->
+  <section th:replace="~{fragments::bootstrapJs}"/>
+</body>
+</html>
