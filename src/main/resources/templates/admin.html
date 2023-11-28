@@ -51,6 +51,12 @@
                                 data-bs-toggle="modal" th:attr="data-bs-target='#deleteCustomer' + ${customer.id()}"
                         ><i class="bi bi-trash-fill"></i>
                         </button>
+                        <!--Btn new Account-->
+                        <button
+                                type="button" class="btn btn-outline-success"
+                                data-bs-toggle="modal" th:attr="data-bs-target='#newAccount' + ${customer.id()}"
+                        ><i class="bi bi-bank"></i>
+                        </button>
                     </td>
                     <!--EditCustomer Form Modal-->
                     <section>
@@ -152,6 +158,59 @@
                             </div>
                         </div>
                     </section>
+
+                    <!--newAccount Form Modal-->
+                    <section>
+                        <div class="modal fade" th:attr="id='newAccount' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="editCustomerLabel">New Account</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form
+                                                th:action="@{/admin/{id}/new-account (id=${customer.id()})}"
+                                                th:object="${accountRegister}"
+                                                method="post">
+                                            <div class="row g-3 p-2">
+                                                <!--Account-->
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <label for="accountSelect">Choose an Account</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <select id="accountSelect" class="form-select" th:field="*{accountName}" required>
+                                                                <option selected th:each="account : ${accounts}"
+                                                                        th:text="${account.name()}"
+                                                                        th:value="${account}"/>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row g-3 p-2">
+                                                <!-- balance --->
+                                                <div class="col col-lg-4">
+                                                    <div class="form-floating ">
+                                                        <input type="number" class="form-control" id="floatingInputBalance" placeholder="Enter Dni" th:field="*{balance}">
+                                                        <label for="floatingInputEmail">Balance</label>
+                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('balance')}" th:errorclass="error" th:errors="*{balance}"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-success">Create</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </tr>
                 </tbody>
             </table>
@@ -164,7 +223,7 @@
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="newCustomerLabel">Register Customer</h1>
+                        <h1 class="modal-title fs-5" id="newCustomerLabel">New Customer</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -273,7 +332,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success">New Customer</button>
+                                <button type="submit" class="btn btn-success">Create</button>
                             </div>
                         </form>
                     </div>

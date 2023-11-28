@@ -21,6 +21,7 @@ public record CustomerUserResponse(
         //accounts To AccountResponse
         List<AccountResponse> accountsResponse = customerFound.getAccounts().stream()
                 .map(account -> new AccountResponse(
+                        account.getId(),
                         account.getIban(),
                         account.getName(),
                         account.getBalance(),

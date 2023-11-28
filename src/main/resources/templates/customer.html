@@ -36,13 +36,14 @@
         <!--Accounts-->
         <div class="row">
           <div class="col col-lg-8">
-            <div class="accordion" id="accordionAccount">
+            <div th:each="account, status: ${customer.accounts()} ">
+              <div class="accordion" id="accordionAccount">
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button class="accordion-button" type="button"
                           data-bs-toggle="collapse" data-bs-target="#collapseOne"
                           aria-expanded="true" aria-controls="collapseOne">
-                    Accounts
+                    Account
                   </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionAccount">
@@ -54,30 +55,58 @@
                         <th scope="col">Name</th>
                         <th scope="col">Balance</th>
                         <th scope="col">Operations</th>
-                         </tr>
+                      </tr>
                       </thead>
                       <tbody>
                       <!--Customer data-->
-                      <tr th:each="account, status : ${customer.accounts()}">
+                      <tr>
                         <td scope="row" th:text="${account.iban()}"></td>
                         <td th:text="${account.name()}"></td>
                         <td th:text="'€ ' + ${account.balance()}"></td>
                         <td>
-                          <!--Btn edit customer-->
+                          <!--Btn Operation-->
                           <button
-                            type="button" class="btn btn-outline-primary"><i class="bi bi-pencil-fill"></i>
+                                  type="button" class="btn btn-outline-success"><i class="bi bi-cash-coin"></i>
                           </button>
-                          <!--Btn Delete customer-->
-                          <button
-                            type="button" class="btn btn-outline-danger"><i class="bi bi-trash-fill"></i>
+                          <!--Btn Detail operation-->
+                          <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#operations' + ${account.id()}" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="bi bi-clipboard-data-fill"></i>
                           </button>
                         </td>
+
                       </tr>
                       </tbody>
                     </table>
+
+                    <!--Detail operation Modal-->
+                    <div class="collapse" th:attr="id='operations' + ${account.id()}" >
+                       <div class="card card-body">
+                          <table>
+                            <thead>
+                              <tr>
+                                <td>Transaction</td>
+                                <td>Date</td>
+                                <td>Amount</td>
+                                <td>Iban-source</td>
+                                <td>Iban-destionation</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr th:each="operation, status: ${account.operations()}">
+                                <td th:text="${operation.transaction()}"></td>
+                                <td th:text="${operation.dateTime()}"></td>
+                                <td th:text="${operation.amount()()}"></td>
+                                <td th:text="${operation.ibanSource()()}"></td>
+                                <td th:text="${operation.ibaDetination()()}"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
