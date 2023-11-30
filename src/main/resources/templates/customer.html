@@ -66,18 +66,24 @@
                         <td>
                           <!--Btn Operation-->
                           <button
-                                  type="button" class="btn btn-outline-success"><i class="bi bi-cash-coin"></i>
+                            class="btn btn-outline-success"
+                            type="button"
+                            data-bs-toggle="modal"
+                            th:attr="data-bs-target='#newOperation' + ${account.id()}"
+                          ><i class="bi bi-cash-coin"></i>
                           </button>
                           <!--Btn Detail operation-->
-                          <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" th:attr="data-bs-target='#operations' + ${account.id()}" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="bi bi-clipboard-data-fill"></i>
+                          <button
+                            class="btn btn-outline-info"
+                            type="button" data-bs-toggle="collapse"
+                            th:attr="data-bs-target='#operations' + ${account.id()}"
+                            aria-expanded="false" aria-controls="collapseExample"
+                          ><i class="bi bi-clipboard-data-fill"></i>
                           </button>
                         </td>
-
                       </tr>
                       </tbody>
                     </table>
-
                     <!--Detail operation Modal-->
                     <div class="collapse" th:attr="id='operations' + ${account.id()}" >
                        <div class="card card-body">
@@ -88,21 +94,115 @@
                                 <td>Date</td>
                                 <td>Amount</td>
                                 <td>Iban-source</td>
-                                <td>Iban-destionation</td>
+                                <td>Iban-destination</td>
                               </tr>
                             </thead>
                             <tbody>
                               <tr th:each="operation, status: ${account.operations()}">
                                 <td th:text="${operation.transaction()}"></td>
                                 <td th:text="${operation.dateTime()}"></td>
-                                <td th:text="${operation.amount()()}"></td>
-                                <td th:text="${operation.ibanSource()()}"></td>
-                                <td th:text="${operation.ibaDetination()()}"></td>
+                                <td th:text="${operation.amount()}"></td>
+                                <td th:text="${operation.ibanSource()}"></td>
+                                <td th:text="${operation.ibanDetination()}"></td>
                               </tr>
                             </tbody>
                           </table>
                       </div>
                     </div>
+                    <!--newOperation Form Modal-->
+                    <section>
+                      <div class="modal fade" th:attr="id='newOperation' +  ${account.id()}" tabindex="-1" aria-labelledby="newOperationLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="newOperationLabel">New Operation</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form
+                                      th:action="@{/customer/{id}/new-operation (id=${customer.id()})}"
+                                      th:object="${operationRequest}"
+                                      method="post">
+                                <div class="row g-3 p-2">
+                                  <!-- balance --->
+                                  <div class="col col-lg-4">
+                                    <div class="form-floating ">
+                                      <input type="number" class="form-control" id="floatingInputAmount" placeholder="Enter Amount" th:field="*{amount}">
+                                      <label for="floatingInputEmail">Amount</label>
+                                      <small class="form-text text-danger " th:if="${#fields.hasErrors('amount')}" th:errorclass="error" th:errors="*{amount}"></small>
+                                    </div>
+                                  </div>
+                                  <!-- dateTime --->
+                                  <div class="col col-lg-6">
+                                    <div class="form-floating ">
+                                      <input type="date" class="form-control" id="floatingInputDateTime" placeholder="Enter Date time" th:field="*{dateTime}">
+                                      <label for="floatingInputEmail">Date time</label>
+                                      <small class="form-text text-danger " th:if="${#fields.hasErrors('dateTime')}" th:errorclass="error" th:errors="*{dateTime}"></small>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row g-3 p-2">
+                                  <!-- transaction --->
+                                  <div class="col col-lg-10">
+                                    <div class="form-group">
+                                      <div class="row">
+                                        <label>Choose a transaction</label>
+                                      </div>
+                                      <div class="row">
+                                        <select id="transaction" class="form-select" th:field="*{transaction}" required>
+                                          <option th:each="transaction : ${transactions}"
+                                                  th:text="${transaction.name()}"
+                                                  th:value="${transaction}"/>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row g-3 p-2">
+                                  <!--Iban source-->
+                                  <div class="col col-lg-10">
+                                    <div class="form-group">
+                                      <div class="row">
+                                        <label for="accountSelect">Choose an Iban source</label>
+                                      </div>
+                                      <div class="row">
+                                        <select id="accountSelect" class="form-select" th:field="*{ibanSource}" required>
+                                          <option selected th:each="source : ${customer.accounts()}"
+                                                  th:text="${source.iban()}"
+                                                  th:value="${source.iban()}"/>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row g-3 p-2">
+                                  <!--Iban destination-->
+                                  <div class="col col-lg-10">
+                                    <div class="form-group">
+                                      <div class="row">
+                                        <label for="accountSelect">Choose an Destination</label>
+                                      </div>
+                                      <div class="row">
+                                        <select id="accountSelect" class="form-select" th:field="*{ibanDestination}">
+                                          <option value="" selected>No aplica</option>
+                                          <option th:each="destination : ${ibansDestination}"
+                                                  th:text="${destination.iban()}"
+                                                  th:value="${destination.iban()}"/>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-success">Create</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 </div>
               </div>

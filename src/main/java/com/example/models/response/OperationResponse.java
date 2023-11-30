@@ -2,13 +2,13 @@ package com.example.models.response;
 
 import com.example.models.enums.Transaction;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record OperationResponse(
         Integer id,
         Transaction transaction,
-        LocalDateTime dateTime,
+        LocalDate dateTime,
         double amount,
         String ibanSource,
-        String ibaDetination
+        String ibanDetination
 ) {}

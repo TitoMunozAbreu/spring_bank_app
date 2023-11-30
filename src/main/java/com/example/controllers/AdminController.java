@@ -42,7 +42,7 @@ public class AdminController {
         //crear cliente
         customerService.create(customer);
         //crear cuenta
-        accountService.create(request.getAccountName(),request.getBalance(),customer);
+        accountService.create(customer);
 
         return "redirect:/admin";
     }
@@ -77,7 +77,7 @@ public class AdminController {
         //pasar toAccountEntity
         AccountEntity account = request.toAccountEntity(customerFound);
         //guardar nueva cuenta
-        accountService.create(request.getAccountName(), request.getBalance(), customerFound);
+        accountService.create(account);
 
         return "redirect:/admin";
 

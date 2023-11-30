@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,8 +24,12 @@ public class CustomerRequest {
     private Role  role;
     private AccountType accountName;
     private double balance;
+    private String iban;
 
     public CustomerEntity toCustomerEntity(){
+        //iban generator
+        String generatedIban = AccountEntity.generateIban();
+        this. iban= generatedIban;
         return CustomerEntity.builder()
                 .dni(this.getDni())
                 .name(this.getName())
@@ -37,7 +40,7 @@ public class CustomerRequest {
                 .password("1234")
                 .role(this.getRole())
                 .accounts(Set.of(
-                        new AccountEntity("IBAN-123",accountName,balance)
+                        new AccountEntity(generatedIban,accountName,balance)
                 ))
                 .build();
     }

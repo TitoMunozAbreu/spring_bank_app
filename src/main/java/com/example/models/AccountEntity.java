@@ -1,6 +1,7 @@
 package com.example.models;
 
 import com.example.models.enums.AccountType;
+import com.example.models.enums.Transaction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,15 +35,44 @@ public class AccountEntity {
     private List<OperationEntity> operations;
 
     public AccountEntity(String iban, AccountType name, double balance) {
-        this.iban = iban;
         this.name = name;
         this.balance = balance;
+        this.iban = iban;
     }
 
     public AccountEntity(String iban, AccountType name, double balance, List<CustomerEntity> customers) {
-        this.iban = iban;
         this.name = name;
         this.balance = balance;
         this.customers = customers;
+        this.iban = iban;
+    }
+
+    public static String generateIban(){
+        String ibanBase = "ES21";
+        int min = 0;
+        int max = 9;
+        int range = max - min + 1;
+
+        for (int i = 0; i < 20; i++) {
+            int random = (int) ((Math.random()* range) + min);
+            ibanBase += String.valueOf(random);
+        }
+        return ibanBase;
+    }
+
+    public void transaction(Transaction transaction, double amount){
+        switch (transaction){
+            case DEPOSIT -> deposit(amount);
+            case TRANSFER, WITHDRAW -> withdrawAndTransfer(amount);
+        }
+
+    }
+
+    private void deposit(double amount){
+        this.balance += amount;
+    }
+
+    private void withdrawAndTransfer(double amount){
+        this.balance -= amount;
     }
 }

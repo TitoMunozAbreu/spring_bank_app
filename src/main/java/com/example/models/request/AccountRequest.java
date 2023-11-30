@@ -17,8 +17,9 @@ public class AccountRequest {
     private double balance;
 
     public AccountEntity toAccountEntity(CustomerEntity customer){
+
         return AccountEntity.builder()
-                .iban("IBAN-456")
+                .iban(AccountEntity.generateIban())
                 .name(this.getAccountName())
                 .balance(this.getBalance())
                 .customers(List.of(customer))

@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class MainController {
 
-    @GetMapping("/")
-    public String home(){
-        return "index";
+    @GetMapping()
+    public String home(Model model){
+        model.addAttribute("loginRequest", new LoginResquest());
+        return "home";
     }
 
     @GetMapping("/login")
     public String login(Model model){
-        model.addAttribute("customer", new LoginResquest());
-        return "login";
+        return "home";
     }
 
 }

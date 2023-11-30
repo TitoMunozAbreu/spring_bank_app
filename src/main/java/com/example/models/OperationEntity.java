@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class OperationEntity {
     @Enumerated(EnumType.STRING)
     private Transaction transaction;
     @Column(columnDefinition = "date")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
     private double amount;
     private String ibanSource;
     private String ibanDestination;

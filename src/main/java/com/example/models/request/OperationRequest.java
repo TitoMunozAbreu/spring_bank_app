@@ -7,17 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OperationRequest {
     private Transaction transaction;
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
     private double amount;
     private String ibanSource;
-    private String ibaDetination;
+    private String ibanDestination;
 
     public OperationEntity toOperationEntity(AccountEntity account){
         return OperationEntity.builder()
@@ -25,7 +26,7 @@ public class OperationRequest {
                 .dateTime(getDateTime())
                 .amount(getAmount())
                 .ibanSource(getIbanSource())
-                .ibanDestination(getIbaDetination())
+                .ibanDestination(getIbanDestination())
                 .account(account)
                 .build();
     }
