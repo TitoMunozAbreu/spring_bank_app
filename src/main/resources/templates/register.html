@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      data-bs-theme="dark">
+<head th:replace="~{fragments::head}"/>
+<body>
+<!--Navbar-->
+<section th:replace="~{fragments::header}"/>
+<!-- Msg alertas -->
+<section th:replace="~{fragments::alerts-msg}"/>
+<!--Formulario-->
+<section>
+  <div class="container-fluid p-4">
+    <div class="container-md p-4" >
+      <h1 class="text-center">Register User</h1>
+      <div class="container-sm d-flex justify-content-center" style="width: 60rem">
+        <div class="row p-4">
+          <form
+                  th:action="@{/register}"
+                  th:object="${registerRequest}"
+                  method="post">
+            <div class="row g-3 p-2">
+              <!-- email --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="text" class="form-control" id="floatingInputEmail" placeholder="Enter email" th:field="*{email}">
+                  <label for="floatingInputEmail">Email</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></small>
+                </div>
+              </div>
+              <!-- password --->
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingInputPassword" placeholder="Enter password" th:field="*{password}">
+                  <label for="floatingInputPassword">Password</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></small>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3 p-2">
+              <!-- dni --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="text" class="form-control" id="floatingInputDni" placeholder="Enter Dni" th:field="*{dni}">
+                  <label for="floatingInputDni">Dni</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('dni')}" th:errorclass="error" th:errors="*{dni}"></small>
+                </div>
+              </div>
+              <!-- dob --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="date" class="form-control" id="floatingInputDOB" placeholder="Enter DOB" th:field="*{dob}">
+                  <label for="floatingInputDOB">Date of Birth</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('dob')}" th:errorclass="error" th:errors="*{dob}"></small>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3 p-2">
+              <!-- name --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="text" class="form-control" id="floatingInputName" placeholder="Enter email" th:field="*{name}">
+                  <label for="floatingInputName">Name</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></small>
+                </div>
+              </div>
+              <!-- lastName --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="text" class="form-control" id="floatingInputLastName" placeholder="Enter last name" th:field="*{lastName}">
+                  <label for="floatingInputLastName">LastName</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></small>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3 p-2">
+              <!-- mobile --->
+              <div class="col">
+                <div class="form-floating ">
+                  <input type="text" class="form-control" id="floatingInputMobile" placeholder="Enter mobile" th:field="*{mobile}">
+                  <label for="floatingInputMobile">Mobile</label>
+                  <small class="form-text text-danger " th:if="${#fields.hasErrors('mobile')}" th:errorclass="error" th:errors="*{mobile}"></small>
+                </div>
+              </div>
+              <!-- roles --->
+              <div class="col ">
+                <div class="form-group">
+                  <div class="row">
+                    <label>Choose a role</label>
+                  </div>
+                  <div class="row">
+                    <select class="form-select" th:field="*{role}" required>
+                      <option th:each="role : ${roles}"
+                              th:text="${role.name()}"
+                              th:value="${role}"/>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <button type="submit" class="btn btn-success">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--Bootstrap-->
+<section th:replace="~{fragments::bootstrapJs}"/>
+</body>
+</html>

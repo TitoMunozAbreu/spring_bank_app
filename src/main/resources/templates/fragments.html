@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       data-bs-theme="dark">
 
 <head th:fragment="head">
@@ -17,7 +18,7 @@
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand">
-        <img  alt="logo" style="border-radius: 100%" width="50" height="50" class="d-inline-block align-text-top">
+        <img th:src="@{~/images/logo.jpeg}" alt="logo" style="border-radius: 100%" width="50" height="50" class="d-inline-block align-text-top">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,24 +26,20 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         <ul class="navbar-nav">
           <li>
+            <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+          </li>
+          <li sec:authorize="hasRole('ADMIN')">
             <a class="nav-link active" aria-current="page" th:href="@{/admin}">Admin</a>
           </li>
-          <li>
+          <li sec:authorize="hasRole('USER')">
             <a class="nav-link active" aria-current="page" th:href="@{/customer}">Customer</a>
           </li>
         </ul>
         <ul class="navbar-nav d-flex align-items-center">
-          <li th:if="${session.userSession == null}" class="nav-item">
-            <button
-                    class="btn btn-outline-success"
-                    type="button"
-                    data-bs-toggle="modal"
-                    th:attr="data-bs-target='#login'"
-            ><i class="bi bi-door-open"></i>
-            </button>
-            <a class="btn btn-outline-primary m-2 p-2" type="button" aria-current="page" th:href="@{/login}">Login</a>
+          <li sec:authorize="!isAuthenticated()" class="nav-item">
+            <a class="btn btn-outline-light m-2 p-2" type="button" aria-current="page" th:href="@{/login}">Login</a>
           </li>
-          <li th:if="${session.userSession != null}" class="nav-item">
+          <li sec:authorize="isAuthenticated()" class="nav-item">
             <a class="btn btn-outline-danger m-2 p-2" type="button" aria-current="page" th:href="@{/logout}">Logout</a>
           </li>
         </ul>
@@ -59,6 +56,10 @@
     </div>
     <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${danger != null}">
       <i class="bi bi-x-circle-fill"><strong th:text="${danger}"/></i>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${warning != null}">
+      <i class="bi bi-x-circle-fill"><strong th:text="${warning}"/></i>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <!-- login?logout msg-->

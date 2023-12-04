@@ -87,7 +87,7 @@ public class AccountService {
                 .collect(Collectors.toList());
 
         return filteredAccounts.stream()
-                .map(account -> new AccountsResponse(account.getIban()))
+                .map(account -> new AccountsResponse(account.getIban(), account.getCustomers().stream().findFirst().get().getName()))
                 .collect(Collectors.toList());
     }
 

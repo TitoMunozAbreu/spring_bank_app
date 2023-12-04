@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       data-bs-theme="dark">
 <head th:replace="~{fragments::head}"/>
 <body>
@@ -12,12 +13,12 @@
     <section>
         <div class="container p-4" style="width: 80%">
             <!--Title-->
-            <h1>Customers</h1>
+            <h1 style="color: darkgoldenrod">Customers</h1>
             <hr>
             <div class="d-flex justify-content-start">
                 <!--btn New customer-->
                 <button
-                    type="button" class="btn btn-outline-success"
+                    type="button" class="btn btn-outline-success my-4"
                     data-bs-toggle="modal" data-bs-target="#newCustomer"
                 >New Customer</button>
             </div>
@@ -33,185 +34,185 @@
                 </thead>
                 <tbody>
                 <!--Customer data-->
-                <tr th:each="customer, status : ${customers}">
-                    <td scope="row" th:text="${customer.name()}"></td>
-                    <td th:text="${customer.lastName()}"></td>
-                    <td th:text="${customer.email()}"></td>
-                    <td th:text="${customer.mobile()}"></td>
-                    <td>
-                        <!--Btn edit customer-->
-                        <button
-                            type="button" class="btn btn-outline-primary"
-                            data-bs-toggle="modal" th:attr="data-bs-target='#editCustomer' + ${customer.id()}"
-                        ><i class="bi bi-pencil-fill"></i>
-                        </button>
-                        <!--Btn Delete customer-->
-                        <button
-                                type="button" class="btn btn-outline-danger"
-                                data-bs-toggle="modal" th:attr="data-bs-target='#deleteCustomer' + ${customer.id()}"
-                        ><i class="bi bi-trash-fill"></i>
-                        </button>
-                        <!--Btn new Account-->
-                        <button
-                                type="button" class="btn btn-outline-success"
-                                data-bs-toggle="modal" th:attr="data-bs-target='#newAccount' + ${customer.id()}"
-                        ><i class="bi bi-bank"></i>
-                        </button>
-                    </td>
-                    <!--EditCustomer Form Modal-->
-                    <section>
-                        <div class="modal fade" th:attr="id='editCustomer' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editCustomerLabel">Edit Customer</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form
-                                                th:action="@{/admin/edit/{id} (id=${customer.id()})}"
-                                                th:object="${customerEdit}"
-                                                method="post">
-                                            <div class="row g-3 p-2">
-                                                <!-- dni --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="text" class="form-control" id="floatingInputDni" placeholder="Enter Dni" th:field="*{dni}">
-                                                        <label for="floatingInputEmail">Dni</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('dni')}" th:errorclass="error" th:errors="*{dni}"></small>
-                                                    </div>
-                                                </div>
-                                                <!-- dob --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="date" class="form-control" id="floatingInputDni" placeholder="Enter DOB" th:field="*{dob}">
-                                                        <label for="floatingInputEmail">Date of Birth</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('dob')}" th:errorclass="error" th:errors="*{dob}"></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 p-2">
-                                                <!-- name --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="text" class="form-control" id="floatingInputName" placeholder="Enter email" th:field="*{name}">
-                                                        <label for="floatingInputEmail">Name</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></small>
-                                                    </div>
-                                                </div>
-                                                <!-- lastName --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="text" class="form-control" id="floatingInputLastName" placeholder="Enter Dni" th:field="*{lastName}">
-                                                        <label for="floatingInputEmail">LastName</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row g-3 p-2">
-                                                <!-- email --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="text" class="form-control" id="floatingInputEmail" placeholder="Enter email" th:field="*{email}">
-                                                        <label for="floatingInputEmail">Email</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></small>
-                                                    </div>
-                                                </div>
-                                                <!-- mobile --->
-                                                <div class="col">
-                                                    <div class="form-floating ">
-                                                        <input type="text" class="form-control" id="floatingInputMobile" placeholder="Enter Dni" th:field="*{mobile}">
-                                                        <label for="floatingInputEmail">Mobile</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('mobile')}" th:errorclass="error" th:errors="*{mobile}"></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Edit Customer</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!--DeleteCustomer Dialog Modal-->
-                    <section>
-                        <div class="modal fade" th:attr="id='deleteCustomer' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editCustomerLabel">Delete Customer</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Do you really want to delete customer <span th:text="${customer.name()}"></span>?</p>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <a th:href="@{/admin/delete/{id} (id=${customer.id()})}" class="btn btn-outline-danger">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!--newAccount Form Modal-->
-                    <section>
-                        <div class="modal fade" th:attr="id='newAccount' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editCustomerLabel">New Account</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form
-                                                th:action="@{/admin/{id}/new-account (id=${customer.id()})}"
-                                                th:object="${accountRegister}"
-                                                method="post">
-                                            <div class="row g-3 p-2">
-                                                <!--Account-->
-                                                <div class="col">
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            <label for="accountSelect">Choose an Account</label>
+                    <tr th:each="customer, status : ${customers}">
+                        <td style="color: #fff5e0" scope="row" th:text="${customer.name()}"></td>
+                        <td style="color: #fff5e0" th:text="${customer.lastName()}"></td>
+                        <td style="color: #fff5e0" th:text="${customer.email()}"></td>
+                        <td style="color: #fff5e0" th:text="${customer.mobile()}"></td>
+                        <td>
+                            <!--Btn edit customer-->
+                            <button
+                                    type="button" class="btn btn-outline-primary"
+                                    data-bs-toggle="modal" th:attr="data-bs-target='#editCustomer' + ${customer.id()}"
+                            ><i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <!--Btn Delete customer-->
+                            <button
+                                    type="button" class="btn btn-outline-danger"
+                                    data-bs-toggle="modal" th:attr="data-bs-target='#deleteCustomer' + ${customer.id()}"
+                            ><i class="bi bi-trash-fill"></i>
+                            </button>
+                            <!--Btn new Account-->
+                            <button
+                                    type="button" class="btn btn-outline-success"
+                                    data-bs-toggle="modal" th:attr="data-bs-target='#newAccount' + ${customer.id()}"
+                            ><i class="bi bi-bank"></i>
+                            </button>
+                        </td>
+                        <!--EditCustomer Form Modal-->
+                        <section>
+                            <div class="modal fade" th:attr="id='editCustomer' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editCustomerLabel">Edit Customer</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form
+                                                    th:action="@{/admin/edit/{id} (id=${customer.id()})}"
+                                                    th:object="${customerEdit}"
+                                                    method="post">
+                                                <div class="row g-3 p-2">
+                                                    <!-- dni --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="text" class="form-control" id="floatingInputDni" placeholder="Enter Dni" th:field="*{dni}">
+                                                            <label for="floatingInputEmail">Dni</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('dni')}" th:errorclass="error" th:errors="*{dni}"></small>
                                                         </div>
-                                                        <div class="row">
-                                                            <select id="accountSelect" class="form-select" th:field="*{accountName}" required>
-                                                                <option selected th:each="account : ${accounts}"
-                                                                        th:text="${account.name()}"
-                                                                        th:value="${account}"/>
-                                                            </select>
+                                                    </div>
+                                                    <!-- dob --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="date" class="form-control" id="floatingInputDni" placeholder="Enter DOB" th:field="*{dob}">
+                                                            <label for="floatingInputEmail">Date of Birth</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('dob')}" th:errorclass="error" th:errors="*{dob}"></small>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="row g-3 p-2">
-                                                <!-- balance --->
-                                                <div class="col col-lg-4">
-                                                    <div class="form-floating ">
-                                                        <input type="number" class="form-control" id="floatingInputBalance" placeholder="Enter Dni" th:field="*{balance}">
-                                                        <label for="floatingInputEmail">Balance</label>
-                                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('balance')}" th:errorclass="error" th:errors="*{balance}"></small>
+                                                <div class="row g-3 p-2">
+                                                    <!-- name --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="text" class="form-control" id="floatingInputName" placeholder="Enter email" th:field="*{name}">
+                                                            <label for="floatingInputEmail">Name</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></small>
+                                                        </div>
+                                                    </div>
+                                                    <!-- lastName --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="text" class="form-control" id="floatingInputLastName" placeholder="Enter Dni" th:field="*{lastName}">
+                                                            <label for="floatingInputEmail">LastName</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-success">Create</button>
-                                            </div>
-                                        </form>
+                                                <div class="row g-3 p-2">
+                                                    <!-- email --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="text" class="form-control" id="floatingInputEmail" placeholder="Enter email" th:field="*{email}">
+                                                            <label for="floatingInputEmail">Email</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></small>
+                                                        </div>
+                                                    </div>
+                                                    <!-- mobile --->
+                                                    <div class="col">
+                                                        <div class="form-floating ">
+                                                            <input type="text" class="form-control" id="floatingInputMobile" placeholder="Enter Dni" th:field="*{mobile}">
+                                                            <label for="floatingInputEmail">Mobile</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('mobile')}" th:errorclass="error" th:errors="*{mobile}"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Edit Customer</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                </tr>
+                        </section>
+
+                        <!--DeleteCustomer Dialog Modal-->
+                        <section>
+                            <div class="modal fade" th:attr="id='deleteCustomer' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editCustomerLabel">Delete Customer</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Do you really want to delete customer <span th:text="${customer.name()}"></span>?</p>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a th:href="@{/admin/delete/{id} (id=${customer.id()})}" class="btn btn-outline-danger">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!--newAccount Form Modal-->
+                        <section>
+                            <div class="modal fade" th:attr="id='newAccount' + ${customer.id()}" tabindex="-1" aria-labelledby="editCustomerLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="editCustomerLabel">New Account</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form
+                                                    th:action="@{/admin/{id}/new-account (id=${customer.id()})}"
+                                                    th:object="${accountRegister}"
+                                                    method="post">
+                                                <div class="row g-3 p-2">
+                                                    <!--Account-->
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <label for="accountSelect">Choose an Account</label>
+                                                            </div>
+                                                            <div class="row">
+                                                                <select id="accountSelect" class="form-select" th:field="*{accountName}" required>
+                                                                    <option selected th:each="account : ${accounts}"
+                                                                            th:text="${account.name()}"
+                                                                            th:value="${account}"/>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row g-3 p-2">
+                                                    <!-- balance --->
+                                                    <div class="col col-lg-4">
+                                                        <div class="form-floating ">
+                                                            <input type="number" class="form-control" id="floatingInputBalance" placeholder="Enter Dni" th:field="*{balance}">
+                                                            <label for="floatingInputEmail">Balance</label>
+                                                            <small class="form-text text-danger " th:if="${#fields.hasErrors('balance')}" th:errorclass="error" th:errors="*{balance}"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success">Create</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -253,7 +254,7 @@
                                 <!-- name --->
                                 <div class="col">
                                     <div class="form-floating ">
-                                        <input type="text" class="form-control" id="floatingInputName" placeholder="Enter email" th:field="*{name}">
+                                        <input type="text" class="form-control" id="floatingInputName" placeholder="Enter name" th:field="*{name}">
                                         <label for="floatingInputEmail">Name</label>
                                         <small class="form-text text-danger " th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></small>
                                     </div>
@@ -261,7 +262,7 @@
                                 <!-- lastName --->
                                 <div class="col">
                                     <div class="form-floating ">
-                                        <input type="text" class="form-control" id="floatingInputLastName" placeholder="Enter Dni" th:field="*{lastName}">
+                                        <input type="text" class="form-control" id="floatingInputLastName" placeholder="Enter lastName" th:field="*{lastName}">
                                         <label for="floatingInputEmail">LastName</label>
                                         <small class="form-text text-danger " th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></small>
                                     </div>
@@ -276,12 +277,12 @@
                                         <small class="form-text text-danger " th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></small>
                                     </div>
                                 </div>
-                                <!-- mobile --->
+                                <!-- password --->
                                 <div class="col">
-                                    <div class="form-floating ">
-                                        <input type="text" class="form-control" id="floatingInputMobile" placeholder="Enter Dni" th:field="*{mobile}">
-                                        <label for="floatingInputEmail">Mobile</label>
-                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('mobile')}" th:errorclass="error" th:errors="*{mobile}"></small>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="floatingInputPassword" placeholder="Enter password" th:field="*{password}">
+                                        <label for="floatingInputPassword">Password</label>
+                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></small>
                                     </div>
                                 </div>
                             </div>
@@ -327,6 +328,14 @@
                                         <input type="number" class="form-control" id="floatingInputBalance" placeholder="Enter Dni" th:field="*{balance}">
                                         <label for="floatingInputEmail">Balance</label>
                                         <small class="form-text text-danger " th:if="${#fields.hasErrors('balance')}" th:errorclass="error" th:errors="*{balance}"></small>
+                                    </div>
+                                </div>
+                                <!-- mobile --->
+                                <div class="col">
+                                    <div class="form-floating ">
+                                        <input type="text" class="form-control" id="floatingInputMobile" placeholder="Enter Dni" th:field="*{mobile}">
+                                        <label for="floatingInputEmail">Mobile</label>
+                                        <small class="form-text text-danger " th:if="${#fields.hasErrors('mobile')}" th:errorclass="error" th:errors="*{mobile}"></small>
                                     </div>
                                 </div>
                             </div>

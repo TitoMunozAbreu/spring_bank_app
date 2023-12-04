@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       data-bs-theme="dark">
 <head th:replace="~{fragments::head}"/>
 <body>
@@ -13,22 +14,35 @@
     <div class="container my-4">
       <div class="">
         <div class="row ">
+          <!--Title-->
+          <h1 style="color: darkgoldenrod">Customer info</h1>
+          <hr>
           <!--customer detail info-->
           <div class="col col-lg-4 my-4">
             <div class="card">
               <div class="card-header">
-                <h3 th:text="${customer.name() + ' ' + customer.lastName() }"></h3>
+                <h3 style="color: #fff5e0" th:text="${customer.name() + ' ' + customer.lastName() }"></h3>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Customer personal detail</h5>
-                <p class="card-text">
-
-                <span th:text="'Date of Birth: ' + ${customer.dob()}"/> <br>
-                <span th:text="'Email: ' + ${customer.email()}"/> <br>
-                <span th:text="'Mobile: ' + ${customer.mobile()}"/> <br>
-                <span th:text="'Role: ' + ${customer.role()}"/>
-
-                </p>
+                <h5 class="card-title">Personal Info</h5>
+                <div class="card-text p-1">
+                  <div class="row">
+                    <p class="col-4" th:text="'Date of Birth:'"/>
+                    <p class="col-6" style="color: #fff5e0" th:text="${customer.dob()}"/>
+                  </div>
+                  <div class="row">
+                    <p class="col-4" th:text="'Email:'"/>
+                    <p class="col-6" style="color: #fff5e0" th:text="${customer.email()}"/>
+                  </div>
+                  <div class="row">
+                    <p class="col-4" th:text="'Mobile:'"/>
+                    <p class="col-6" style="color: #fff5e0" th:text="${customer.mobile()}"/>
+                  </div>
+                  <div class="row">
+                    <p class="col-4" th:text="'Role:'"/>
+                    <p class="col-6" style="color: #fff5e0" th:text="${customer.role()}"/>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -64,7 +78,7 @@
                         <td th:text="${account.name()}"></td>
                         <td th:text="'€ ' + ${account.balance()}"></td>
                         <td>
-                          <!--Btn Operation-->
+                          <!--Btn New Operation-->
                           <button
                             class="btn btn-outline-success"
                             type="button"
@@ -84,6 +98,7 @@
                       </tr>
                       </tbody>
                     </table>
+
                     <!--Detail operation Modal-->
                     <div class="collapse" th:attr="id='operations' + ${account.id()}" >
                        <div class="card card-body">
@@ -146,7 +161,7 @@
                                   <div class="col col-lg-10">
                                     <div class="form-group">
                                       <div class="row">
-                                        <label>Choose a transaction</label>
+                                        <label>Choose transaction</label>
                                       </div>
                                       <div class="row">
                                         <select id="transaction" class="form-select" th:field="*{transaction}" required>
@@ -163,7 +178,7 @@
                                   <div class="col col-lg-10">
                                     <div class="form-group">
                                       <div class="row">
-                                        <label for="accountSelect">Choose an Iban source</label>
+                                        <label for="accountSelect">Choose iban source</label>
                                       </div>
                                       <div class="row">
                                         <select id="accountSelect" class="form-select" th:field="*{ibanSource}" required>
@@ -180,14 +195,15 @@
                                   <div class="col col-lg-10">
                                     <div class="form-group">
                                       <div class="row">
-                                        <label for="accountSelect">Choose an Destination</label>
+                                        <label for="accountSelect">Choose iban Destination</label>
                                       </div>
                                       <div class="row">
                                         <select id="accountSelect" class="form-select" th:field="*{ibanDestination}">
                                           <option value="" selected>No aplica</option>
                                           <option th:each="destination : ${ibansDestination}"
-                                                  th:text="${destination.iban()}"
-                                                  th:value="${destination.iban()}"/>
+                                                  th:value="${destination.iban()}">
+                                            <span th:text="${destination.iban()}"></span> - <span th:text="${destination.name()}"></span>
+                                          </option>
                                         </select>
                                       </div>
                                     </div>
